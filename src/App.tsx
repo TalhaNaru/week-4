@@ -1,20 +1,21 @@
-import { useState } from 'react';
-import { TitleEffect } from './components/TitleEffect';
-import { DependencyDemo } from './components/DependencyDemo';
-import { Timer } from './components/Timer';
+import { useCountries } from './hooks/useCountries';
 
 export default function App() {
-  const [showTimer, setShowTimer] = useState(true);
+  const { data, loading, error } = useCountries();
+
+  if (loading) {
+    return <p>Loading countries...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   return (
-    <>
-      <h1>Country Explorer</h1>
-      <TitleEffect />
-      <DependencyDemo />
-      <button onClick={() => setShowTimer(!showTimer)}>
-        {showTimer ? 'Hide' : 'Show'} timer
-      </button>
-      {showTimer && <Timer />}
-    </>
+    <ul>
+      {data.map((country) => (
+        <li key={country.cca3}>{country.name}</li>
+      ))}
+    </ul>
   );
 }
