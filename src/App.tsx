@@ -1,20 +1,27 @@
-import { useState } from 'react';
-import { TitleEffect } from './components/TitleEffect';
-import { DependencyDemo } from './components/DependencyDemo';
-import { Timer } from './components/Timer';
+import { useCountries } from './hooks/useCountries';
+import { FilterProvider } from './context/FilterProvider';
+import { RefDemo } from './components/RefDemo';
+import { RegionPicker } from './components/RegionPicker';
+import { RegionLabel } from './components/RegionLabel';
 
 export default function App() {
-  const [showTimer, setShowTimer] = useState(true);
+  const { data, loading, error } = useCountries();
 
   return (
-    <>
+    <FilterProvider>
       <h1>Country Explorer</h1>
-      <TitleEffect />
-      <DependencyDemo />
-      <button onClick={() => setShowTimer(!showTimer)}>
-        {showTimer ? 'Hide' : 'Show'} timer
-      </button>
-      {showTimer && <Timer />}
-    </>
+      <RefDemo />
+      <RegionPicker />
+      <RegionLabel />
+      {loading && <p>Loading countries...</p>}
+      {error && <p>Error: {error}</p>}
+      {!loading && !error && (
+        <ul>
+          {data.map((country) => (
+            <li key={country.cca3}>{country.name}</li>
+          ))}
+        </ul>
+      )}
+    </FilterProvider>
   );
 }
