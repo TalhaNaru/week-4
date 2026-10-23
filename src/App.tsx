@@ -1,21 +1,10 @@
-import { useCountries } from './hooks/useCountries';
+import { TailwindDemo } from './components/TailwindDemo';
 
 export default function App() {
-  const { data, loading, error } = useCountries();
-
-  if (loading) {
-    return <p>Loading countries...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
-
   return (
-    <ul>
-      {data.map((country) => (
-        <li key={country.cca3}>{country.name}</li>
-      ))}
-    </ul>
+    <main className="mx-auto max-w-5xl space-y-6 p-4">
+      <h1 className="text-3xl font-bold text-gray-900">Country Explorer</h1>
+      <TailwindDemo />
+    </main>
   );
 }
