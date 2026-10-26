@@ -30,6 +30,8 @@ export function useCountries(): {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function load() {
       try {
         if (!API_KEY) {
@@ -43,7 +45,10 @@ export function useCountries(): {
         while (more) {
           const response = await fetch(
             `${BASE_URL}?response_fields=${FIELDS}&limit=${PAGE_SIZE}&offset=${offset}`,
-            { headers: { Authorization: `Bearer ${API_KEY}` } },
+            {
+              headers: { Authorization: `Bearer ${API_KEY}` },
+              signal: controller.signal,
+            },
           );
           if (!response.ok) {
             throw new Error(`Request failed with status ${response.status}`);
@@ -59,19 +64,22 @@ export function useCountries(): {
             cca3: item.codes.alpha_3,
             name: item.names.common,
             capital: item.capitals?.[0]?.name ?? 'N/A',
-            population: item.population,
+            population: item.population ?? 0,
             region: item.region,
             flag: item.flag.url_svg,
           })),
         );
       } catch (err) {
+        if (controller.signal.aborted) return;
         setError(err instanceof Error ? err.message : 'Something went wrong');
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
 
     load();
+
+    return () => controller.abort();
   }, []);
 
   return { data, loading, error };
