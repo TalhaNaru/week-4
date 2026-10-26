@@ -12,7 +12,7 @@ export default function App() {
   return (
     <FilterProvider>
       <main className="mx-auto max-w-6xl space-y-6 p-4">
-        <h1 className="text-3xl font-bold text-white-900">Country Explorer</h1>
+        <h1 className="text-3xl font-bold text-white">Country Explorer</h1>
         <div className="flex flex-col gap-3 sm:flex-row">
           <SearchBox value={search} onChange={setSearch} />
           <RegionPicker />
