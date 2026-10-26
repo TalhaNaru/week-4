@@ -71,5 +71,31 @@ export default defineConfig([
     },
   },
 ])
+# Country Explorer (Week 4)
+
+A React app that fetches all countries from the REST Countries API and shows them as a searchable, filterable grid of cards.
+
+## Tech stack
+Vite, React, TypeScript, Tailwind CSS, ESLint, Prettier
+
+## Features
+- Data fetching in one custom hook, useCountries()
+- Loading, error, empty and results states
+- Search by country name (case-insensitive)
+- Region filter shared through FilterContext
+- Cards with flag, name, capital, population and region
+- Responsive grid, 1 column on mobile up to 4 on desktop
+
+## How to run
+1. npm install
+2. Get a free API key at https://restcountries.com/sign-up
+3. Create a file named .env.local with: VITE_RESTCOUNTRIES_KEY=your_key_here
+4. npm run dev
+
+## Scripts
+- npm run dev: start the dev server
+- npm run build: build for production
+- npm run lint: run ESLint
+- npm run format: run Prettier
 
 ```
